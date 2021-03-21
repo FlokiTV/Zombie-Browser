@@ -26,6 +26,6 @@ module.exports = {
         _utils.page.closeAll(ctx)
         let pg = await ctx.newPage()
         await pg.goto('http://example.com', { waitUntil: 'domcontentloaded', timeout: 0 })
-        await page.screenshot({ path: `${id}.png`, timeout: 0 })
+        await pg.screenshot({ path: `${id}.png`, timeout: 0 })
     }
 }
