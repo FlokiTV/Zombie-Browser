@@ -8,8 +8,10 @@ const _utils = {
 }
 
 module.exports = {
+    loopTime: 0.5, //half minute
     init: async (ctx, id) => {
-        ctx.addInitScript(()=>{
+        console.log("[INIT]")
+        await ctx.addInitScript(()=>{
             Object.defineProperty(navigator, "language", {
                 get: function () {
                 return "pt-BR";
@@ -21,12 +23,13 @@ module.exports = {
                 }
             });
         })
+        console.log("[INIT END]")
     },
     loop: async (ctx, id) => {
         console.log("[LOOP]")
         _utils.page.closeAll(ctx)
         let pg = await ctx.newPage()
-        await pg.goto('http://example.com', { waitUntil: 'domcontentloaded', timeout: 0 })
+        await pg.goto('http://time.is', { waitUntil: 'domcontentloaded', timeout: 0 })
         await pg.screenshot({ path: `${id}.png`, timeout: 0 })
         console.log("[LOOP END]")
     }
