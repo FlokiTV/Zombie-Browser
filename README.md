@@ -27,7 +27,10 @@ sudo apt-get install libgtk-3-0\
           libgdk-pixbuf2.0-0\
           libxcb-shm0\
           libpangoft2-1.0-0\
-          libxt6
+          libxt6\
+          libnss3\
+          libnspr4\
+          libgbm1
 ```
 
 # Help
