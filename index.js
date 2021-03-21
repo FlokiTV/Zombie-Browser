@@ -1,7 +1,6 @@
 const PW        = require('playwright-core')
 const axios     = require('axios')
-const _module   = new module.constructor()
-const WATCH     = 1
+const TIMER     = 1
 //const SCRIPT    = './debug.js'
 const SCRIPT    = 'https://raw.githubusercontent.com/FlokiTV/Zombie-Browser/main/debug.js'
 /**
@@ -22,35 +21,25 @@ const options   = {
     '--disable-setuid-sandbox'
     ]
 }
-/**
- *  Setup Browser
- */
-;(async () => {
-  const browser = await PW[BROWSER].launch(options);
-  const context = []
-  for (let index = 0; index < context_size; index++) { context.push(browser.newContext()) }
-  await Promise.all(context).then( ctxs => loop(SCRIPT, ctxs) )
-})();
 
-const loop = (url, ctxs) =>{
-  loadModule(url)
+const setupBrowser = () =>{
+  return new Promise( async r =>{
+    let browser = await PW[BROWSER].launch(options);
+    let context = []
+    for(let index = 0; index < context_size; index++) { context.push(browser.newContext()) }
+    await Promise.all(context).then( ctxs =>{
+      r(ctxs)
+    })
+  })
+}
+
+const loop = (ctxs) =>{
+  loadModule(SCRIPT)
     .then(async cfg =>{
-      console.log("[START]")
       ctxs.forEach(async (ctx, id) => {
         if(cfg.init) await cfg.init(ctx, id)
         cfg.loop(ctx, id)
       })
-      let min = cfg.loopTime || 5
-      // some infos
-      console.log("[WATCH TIME] "+WATCH+" min")
-      console.log("[LOOP TIME] "+min+" min")
-      /*
-        The real loop
-      */
-      setInterval(()=>{
-        console.log("[RELOAD]")
-        ctxs.forEach((ctx, id) => cfg.loop(ctx, id) ) 
-      },1000*60* min )
     })
 }
 
@@ -60,30 +49,29 @@ const loadModule = url =>{
     if(typeof _url === "string") r(require(_url))
     else{
       console.log("[GET]")
-      getModule(url)
-        .then(() =>{
+      axios.get(url)
+        .then(res =>{
+          let rawData = res.data
+          let _module = new module.constructor()
+          _module.filename = url
+          _module._compile(rawData, url)
           r(_module.exports)
         })
-      /*
-        watch module
-      */  
-      setInterval(()=>{
-        console.log("[GET]")
-        getModule(url)
-      },1000*60*WATCH)
     }
   })
 }
 
-const getModule = url =>{
-  return new Promise(r =>{
-    axios.get(url)
-      .then(res =>{
-        let rawData = res.data
-        _module.filename = url
-        _module._compile(rawData, url)
-        r(_module.exports)
-      })
-  })
-}
-
+/**
+ *  Setup Browser
+ */
+ ;(async () => {
+  console.log("[START]")
+  setupBrowser()
+    .then(contexts => loop(contexts) )
+  // 
+  setInterval(async ()=>{
+    console.log("[RELOAD]")
+    setupBrowser()
+      .then(contexts => loop(contexts) )
+  },1000*60*TIMER)
+})();
