@@ -16,7 +16,7 @@ const options   = {
   /* apt install chromium-chromedriver -y */
   // executablePath: '/usr/lib/chromium-browser/chromium-browser',
 
-  executablePath: '/bin/google-chrome-stable',
+  //executablePath: '/bin/google-chrome-stable',
 
   args: [
     //'--proxy-server=socks5://127.0.0.1:'+PROXY,
