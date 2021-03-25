@@ -61,7 +61,7 @@ const loadModule = url =>{
   })
 }
 
-const __log = e = >{
+const __log = e =>{
   let styles = [
       'background: linear-gradient(#D33106, #571402)'
       , 'border: 1px solid #3E0E02'
