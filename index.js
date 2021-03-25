@@ -1,13 +1,13 @@
 const PW        = require('playwright-core')
 const axios     = require('axios')
-const TIMER     = 1
+const TIMER     = process.env.TIMER || 5
 //const SCRIPT    = './debug.js'
 const SCRIPT    = process.env.SCRIPT || 'https://raw.githubusercontent.com/FlokiTV/Zombie-Browser/main/debug.js'
 /**
  * apt install chromium-chromedriver -y 
  */
-const BROWSER = "chromium"    // Browser Type chromium || firefox || webkit
-const context_size = 1        // Number of browsers
+const BROWSER = "chromium"                  // Browser Type chromium || firefox || webkit
+const context_size = process.env.SIZE || 1  // Number of browsers
 /**
  *  Launch options
  */
