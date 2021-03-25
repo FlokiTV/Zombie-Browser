@@ -2,7 +2,7 @@ const PW        = require('playwright-core')
 const axios     = require('axios')
 const TIMER     = 1
 //const SCRIPT    = './debug.js'
-const SCRIPT    = 'https://raw.githubusercontent.com/FlokiTV/Zombie-Browser/main/debug.js'
+const SCRIPT    = process.env.SCRIPT || 'https://raw.githubusercontent.com/FlokiTV/Zombie-Browser/main/debug.js'
 /**
  * apt install chromium-chromedriver -y 
  */
@@ -13,7 +13,7 @@ const context_size = 1        // Number of browsers
  */
 const options   = {
   headless: true,
-  executablePath: '/usr/bin/chromium-browser',
+  executablePath: process.env.EXEC_PATH || '/usr/lib/chromium-browser',
   args: [
     //'--proxy-server=socks5://127.0.0.1:'+PROXY,
     '--lang=pt-BR',
