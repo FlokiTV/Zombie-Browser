@@ -69,7 +69,7 @@ const __log = e => console.log(e);
  ;(async () => {
   __log(`[START] Timer: ${TIMER}`)
   __log(`[SCRIPT] ${SCRIPT}`)
-  __log(`[CONTEXT] Size: ${SIZE}`)
+  __log(`[CONTEXT] Size: ${context_size}`)
   setupBrowser()
     .then(contexts => loop(contexts) )
   // 
